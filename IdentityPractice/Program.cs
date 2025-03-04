@@ -71,7 +71,7 @@ namespace IdentityPractice
 
 
 
-            //Set TimeSpan For SecurityStame
+            //Set TimeSpan For SecurityStamp
             builder.Services.Configure<SecurityStampValidatorOptions>(option =>
             {
                 option.ValidationInterval = TimeSpan.FromSeconds(5);
