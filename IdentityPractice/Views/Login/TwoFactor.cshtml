@@ -1,0 +1,24 @@
+﻿@using identityPractice.ViewModels
+@model TwoFactorViewModel
+
+@{
+    ViewData["Title"] = "احراز هویت دو مرحله ای ";
+}
+
+<h1>شماره ثابت خود را وارد کنید</h1>
+<div>
+    <form asp-controller="Login" asp-action="TwoFactor" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <label asp-for="HomePhoneNumber" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="HomePhoneNumber" class="form-control" />
+            <span asp-validation-for="HomePhoneNumber" class="text-danger"></span>
+        </div>
+
+        <br />
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">تایید</button>
+        </div>
+    </form>
+</div>

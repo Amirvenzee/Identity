@@ -1,0 +1,31 @@
+﻿@using identityPractice.ViewModels
+@model MyInfoViewModel
+
+
+
+@{
+    ViewData["Title"] = "اطلاعات شخصی";
+
+
+
+}
+
+
+<h1> اطلاعات شخصی</h1>
+<br />
+<h2>Id:  @Model.id</h2>
+<br />
+<h2>UserName:  @Model.UserName</h2>
+<br />
+<h2>email: @Model.Email</h2>
+<br />  
+
+
+@if(Model.TwoFactor){
+    <h2>TwoFactor: تایید شده است </h2>
+}
+else{
+    <h2>TwoFactor: نیاز به احراز هویت </h2>
+}
+
+
