@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>سلام {{UserName}} عزیز</h2>
+        <p>ثبت نام انجام شد و برای تأیید ایمیل خود روی دکمه زیر کلیک کنید:</p>
+        <a href="{{ConfirmLink}}" class="btn">تأیید ایمیل</a>
+    </div>
+</body>
+
+</html>

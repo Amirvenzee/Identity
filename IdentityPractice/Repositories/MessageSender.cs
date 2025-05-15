@@ -1,6 +1,7 @@
 ﻿
 using System.Net.Mail;
 using System.Net;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace IdentityPractice.Repositories
 {
@@ -36,5 +37,17 @@ namespace IdentityPractice.Repositories
 
             return Task.CompletedTask;
         }
+
+        public async Task<string> GetEmailBodyAsync(string userName, string confirmLink)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "EmailConfirmation.html");
+            var html = await File.ReadAllTextAsync(filePath);
+            html = html.Replace("{{UserName}}", userName)
+                       .Replace("{{ConfirmLink}}", confirmLink);
+            return html;
+        }
+
+
+
     }
 }
