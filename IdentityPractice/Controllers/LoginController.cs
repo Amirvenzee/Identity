@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using NuGet.Common;
 using System.Reflection.Emit;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -54,7 +55,6 @@ namespace IdentityPractice.Controllers
                 {
                     Email = model.Email,
                     UserName = model.UserName,
-                    EmailConfirmed = true,
                     PhoneNumber = model.PhoneNUmber,
                     PhoneNumberConfirmed = true,
                     
@@ -65,14 +65,23 @@ namespace IdentityPractice.Controllers
 
                 if (result.Succeeded)
                 {
-                    //var emailConfirmationToken =
-                    //    await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var emailMessage = "ثبت نام انجام شد";
-                    ////    Url.Action("ConfirmEmail", "Account",
-                    ////        new { username = user.UserName, token = emailConfirmationToken },
-                    ////        Request.Scheme);
-                    //await _messageSender.SendEmailAsync(model.Email, "Aizen", emailMessage);
+                    var emailConfirmationToken =
+                        await _userManger.GenerateEmailConfirmationTokenAsync(newUser);
+                  
+
+                    var Link = Url.Action(nameof(ConfirmEmail),nameof(Login),
+                          new { username = newUser.UserName, token = emailConfirmationToken },
+                          Request.Scheme);
+
+                    TempData["link"] = Link;
+
+
+                    var Message =  await _messageSender.GetEmailBodyAsync(newUser.UserName,Link);
+
                     
+
+                    await _messageSender.SendEmailAsync(model.Email, "Aizen", Message,true);
+
 
                     return RedirectToAction(nameof(Login));
                 }
@@ -86,6 +95,19 @@ namespace IdentityPractice.Controllers
             return View(model);
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userName, string token)
+        {
+            var user = await _userManger.FindByNameAsync(userName);
+            if (user == null) return NotFound();
+
+            var result = await _userManger.ConfirmEmailAsync(user, token);
+            return result.Succeeded ? Content("ایمیل با موفقیت تأیید شد.") : BadRequest("تأیید ایمیل ناموفق بود.");
+        }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> IsUserNameInUse(string userName)
@@ -101,7 +123,7 @@ namespace IdentityPractice.Controllers
         {
             var user = await _userManger.FindByEmailAsync(email);
             if (user == null) return Json(true);
-            return Json("نام کاربری تکراری است ");
+            return Json("ایمیل تکراری است ");
 
         }
 
