@@ -13,7 +13,7 @@ namespace IdentityPractice.Controllers
         {
             _roleManager = roleManager;
         }
-
+        //مدیریت نقش ها
         public IActionResult Index()
         {
             var roles = _roleManager.Roles.ToList();
